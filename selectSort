@@ -1,0 +1,19 @@
+// 选择排序
+// 优：移动数据的次数已知（n-1 次）
+// 缺：比较次数多
+function selectSort(arr) {
+ for ( var i = 0; i < arr.length; i ++ ) {
+  var min = i;
+  for ( var j = i + 1; j < arr.length; j ++ ) {
+   if ( arr[min] > arr[j] ) {
+    min = j;
+    if ( min != i) {
+     var temp = arr[j];
+     arr[j] = arr[i];
+     arr[i] = temp;
+    }
+   }
+  }
+ }
+ return arr;
+}
