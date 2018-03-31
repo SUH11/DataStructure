@@ -19,7 +19,7 @@ function mergeSort(arr) {
 		return arr;
 	}
 
-	var mid = parseInt(arr.length/2);
+	var mid = parseInt(arr.length >> 1);
 	var leftArr = arr.slice(0, mid);
 	var rightArr = arr.slice(mid);
 
