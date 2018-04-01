@@ -29,12 +29,34 @@ function push(obj) {
 		throw 'stack is full！';
 	}
 	this.dataStorage[this.index ++] = obj;
+	// 特殊的栈，得到最小值
+	// if ( MinStack.minPop() > obj ) {
+	// 	MinStack.minPush(obj);
+	// }
 }
 function pop() {
 	if ( this.index == 0 ) {
 		throw 'empty stack！'
 	}
 	return this.dataStorage[--this.index];
+}
+
+function MinStack() {
+	this.dataStorageMin = [];
+	this.size = 1;
+	this.minPush = minPush;
+	this.minPop = minPop;
+}
+
+function minPush(obj) {
+	this.dataStorageMin[0] = obj;
+}
+
+function minPop() {
+	if ( this.dataStorageMin.length == 0 ) {
+		throw Error 'Min Stack is empty!';
+	}
+	return this.dataStorageMin[0];
 }
 
 
