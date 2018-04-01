@@ -8,7 +8,7 @@ function Queue(initSize) {
 	this.size = initSize;
 	this.index = 0;
 	this.push = push;
-	this.pop = pop;
+	this.poll = poll;
 }
 
 function push(obj) {
@@ -18,10 +18,10 @@ function push(obj) {
 	this.dataStorage[this.index++] = obj;
 }
 
-function pop() {
+function poll() {
 	if ( this.dataStorage.length == 0 ) {
 		throw Error 'The queue is empty!';
 	}
-	this.dataStorage.splice(0, 1);
 	this.index --;
+	return this.dataStorage.splice(0, 1)[0];
 }
