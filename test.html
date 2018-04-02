@@ -4,63 +4,52 @@
 	<title></title>
 	<meta charset="utf-8">
 	<script type="text/javascript">
-		var matrix = [
-			// [1, 2, 3],
-			// [4, 5, 6],
-			// [7, 8, 9]
-			[1, 2, 3, 4],
-			[12, 13, 14, 5],
-			[11, 16, 15, 6],
-			[10, 9, 8, 7]
+		// 岛问题
+
+		var arr = [
+			[0, 0, 1, 0, 1, 0],
+			[1, 1, 1, 0, 1, 0],
+			[1, 0, 0, 1, 0, 0],
+			[0, 0, 0, 0, 0, 0]
 		];
 
-		// 标记左上
-		var a = 0;
-		var b = 0;
-		// 标记右下
-		var c = matrix.length - 1;
-		var d = matrix[0].length - 1;
-		// console.log( printEdage(matrix, a++, b++, c--, d--) );
-		while ( a <= c && b <= d ) {
-			console.log(printEdage(matrix, a++, b++, c--, d--));
-		}
+		console.log(island(arr));
 
-		function printEdage(matrix, a, b, c, d) {
+		function island(arr) {
+			if ( arr == null || arr.length < 0 ) {
+				return 0;
+			} 
 
-			if ( a == c ) { // 如果在一行上
-				for ( var i = a; i <= d; i ++ ) {
-					console.log(matrix[a][i]);
-				}
-			} else if ( b == d ) { // 如果在一列上
-				for ( var i = b; i <= c; i ++ ) {
-					console.log(matrix[i][b]);
-				}
-			} else {
-				var times = d - b;
-				console.log('times', times)
-				for ( var i = 0; i != times; i ++ ) {
-					console.log('左上', matrix[a][b+i]);
-					console.log('右上', matrix[a+i][d])
-					console.log('右下', matrix[c][d-i])
-					console.log('左下', matrix[c-i][a])
+			var m = arr[0].length;
+			var n = arr.length;
+			var count = 0;
 
-					var temp = matrix[a][b+i];
-					matrix[a][b+i] = matrix[c-i][a];
-					matrix[c-i][a] = matrix[c][d-i];
-					matrix[c][d-i] = matrix[a+i][d];
-					matrix[a+i][d] = temp;
-
-					// var temp = matrix[a + i][b];
-					// matrix[a + i][b] = matrix[a][b-i];
-					// matrix[a][b-i] = matrix[c-i][d];
-					// matrix[c - i][d] = matrix[c][b + i];
-					// matrix[c][b + i] = temp;
-					 
+			for ( var i = 0; i < n; i ++ ) {
+				for ( var j = 0; j < m; j ++ ) {
+					if ( arr[i][j] == 1 ) {
+						count ++;
+						arr = infect(arr, i, j, m, n);
+					}
 				}
 			}
 
-			return matrix;
+			return count;
 
+		}
+
+		function infect(arr, i, j, m, n) {
+			if ( i < 0 || i >= n || j < 0 || j >= m || arr[i][j] != 1) {
+				return;
+			}
+			arr[i][j] = 2;
+			arr = (typeof infect(arr, i - 1, j, m, n)) == 'undefined'? arr : infect(arr, i - 1, j, m, n);
+			arr = (typeof infect(arr, i + 1, j, m, n)) == 'undefined'? arr : infect(arr, i + 1, j, m, n);
+			arr = (typeof infect(arr, i, j - 1, m, n)) == 'undefined'? arr : infect(arr, i, j - 1, m, n);
+			arr = (typeof infect(arr, i, j + 1, m, n)) == 'undefined'? arr : infect(arr, i, j + 1, m, n);
+			// arr = infect(arr, i + 1, j, m, n);
+			// arr = infect(arr, i, j - 1, m, n);
+			// arr = infect(arr, i, j + 1, m, n);
+			return arr;
 		}
 		
 	</script>
@@ -69,3 +58,14 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
