@@ -4,19 +4,16 @@
 	<title></title>
 	<meta charset="utf-8">
 	<script type="text/javascript">
-		// 列举字符串的所有子字符串
-		var str = 'abc';
+		// 母牛每年生一只母牛,新出生的母牛成长三年后也能每年生一只 母牛,假设不会死。求N年后,母牛的数量。
+		console.log( getNum(6) );
 
-		printAll(str, 0, '');
-
-		function printAll(str, i, res) {
-			if ( i == str.length ) {
-				console.log('res: ' + res);
-				return;
+		function getNum(n) {
+			if ( n >= 5 ) {
+				return getNum(n-1) + getNum(n-3);
+			} else {
+				return n;
 			}
-
-			printAll(str, i + 1, res);
-			printAll(str, i + 1, res + str[i]);
+			
 		}
 
 		
