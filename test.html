@@ -4,44 +4,19 @@
 	<title></title>
 	<meta charset="utf-8">
 	<script type="text/javascript">
-		var startArr = [9, 11, 13, 15, 19];
-		var endArr = [11, 11.5, 20, 16, 19.5];
-		var count = 0;
+		// 汉诺塔问题  左中右
 
-		getTime(startArr, endArr, 0)
-		console.log( count );
+		hanoi(2, '左', '右', '中');
 
-		function getTime(startArr, endArr, current) {
-
-			for ( var i = 0; i < startArr.length; i ++ ) {
-				if ( startArr[i] < current ) {
-					startArr.splice(i, 1);
-					endArr.splice(i, 1);
-				}
+		function hanoi(n, from, to, help) {
+			if ( n == 1 ) {
+				console.log('Move 1 from ' + from + ' to ' + to);
+			} else {
+				hanoi(n - 1, from, help, to);
+				console.log( 'Move ' + n + ' from ' + from + ' to ' + to);
+				hanoi(n - 1, help, to, from);
 			}
-
-			var minEnd = endArr[0];
-			var index = 0;
-
-			for ( var i = 1; i < endArr.length; i ++ ) {
-				if ( endArr[i] < minEnd ) {
-					minEnd = endArr[i];
-					index = i;
-				}
-			}
-			
-
-			if ( current < minEnd ) {
-				current = minEnd;
-				count ++;
-				startArr.splice(index, 1);
-				endArr.splice(index, 1);
-				getTime(startArr, endArr, current);
-			}
-
-			return;
 		}
-
 
 
 		
