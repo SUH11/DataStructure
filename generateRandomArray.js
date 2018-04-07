@@ -21,10 +21,11 @@ for ( var i = 0; i < testTime; i ++ ) {
 
 console.log(succeed ? 'Nice !' : 'Not !!!');
 
-
+// 生成随机数组
 function generateRandomArray(size, value) {
 	var arr = [];
 	for ( var i = 0; i < size; i ++ ) {
+		// 0~98 - 0~99
 		arr.push( Math.floor((value - 1) * Math.random()) - Math.floor(value * Math.random()))
 	}
 	return arr;
@@ -65,6 +66,7 @@ function copyArray(arr) {
 	return copyArr;
 }
 
+// 判断两个数组是否相同
 function isEqual(arr1, arr2) {
 	if ( (arr1 == null && arr2 !== null) || (arr1 != null && arr2 == null) ) {
 		return false;
