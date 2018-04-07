@@ -4,16 +4,45 @@
 	<title></title>
 	<meta charset="utf-8">
 	<script type="text/javascript">
-		var arr = ['i', 'l', 'a'];
+		var startArr = [9, 11, 13, 15, 19];
+		var endArr = [11, 11.5, 20, 16, 19.5];
+		var count = 0;
 
-		console.log(compare(arr));
+		getTime(startArr, endArr, 0)
+		console.log( count );
 
-		function compare(arr) {
-			arr.sort(function(a, b) {
-				return a + b >= b + a;
-			});
-			return arr.join('');
+		function getTime(startArr, endArr, current) {
+
+			for ( var i = 0; i < startArr.length; i ++ ) {
+				if ( startArr[i] < current ) {
+					startArr.splice(i, 1);
+					endArr.splice(i, 1);
+				}
+			}
+
+			var minEnd = endArr[0];
+			var index = 0;
+
+			for ( var i = 1; i < endArr.length; i ++ ) {
+				if ( endArr[i] < minEnd ) {
+					minEnd = endArr[i];
+					index = i;
+				}
+			}
+			
+
+			if ( current < minEnd ) {
+				current = minEnd;
+				count ++;
+				startArr.splice(index, 1);
+				endArr.splice(index, 1);
+				getTime(startArr, endArr, current);
+			}
+
+			return;
 		}
+
+
 
 		
 	</script>
@@ -22,14 +51,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
