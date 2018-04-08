@@ -8,6 +8,9 @@ var arr = [1, 6, 9, 4, 3, 2];
 console.log(quickSort2(arr))
 
 function quickSort(arr) {
+	if ( arr == null ) {
+		return;
+	}
 	if ( arr.length <= 0 ) {
 		return arr;
 	}

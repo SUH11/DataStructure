@@ -4,70 +4,64 @@
 	<title></title>
 	<meta charset="utf-8">
 	<script type="text/javascript">
-		var testTime = 5000;
-		var size = 10;
-		var value = 100;
-		var succeed = true;
+		var arr = [1, 6, 4, 3, 5];
+		console.log( 'bubbleSort', bubbleSort(arr) );
+		console.log( 'selectSort', selectSort(arr) );
+		console.log( 'insertSort', insertSort(arr) );
+		console.log( 'mergeSort', mergeSort(arr) );
+		console.log( 'quickSort', quickSort(arr) );
+		console.log( 'heapSort', heapSort(arr) );
 
-		for ( var i = 0; i < testTime; i ++ ) {
-			var arr = generateRandomArray(10, 100);
-			var arr1 = copyArr(arr);
-			var arr2 = copyArr(arr);
-			arr1 = bubbleSort(arr1);
-			arr2 = rightMethod(arr2);
-			if ( !isEqual(arr1, arr2) ) {
-				console.log('Not !!!' + arr);
+		// 
+		function heapSort(arr) {
+			for ( var i = 0; i < arr.length; i ++ ) {
+				arr = heapInsert(arr, i);
 			}
-		}
-		console.log( 'succeed: ' + succeed );
 
-		function generateRandomArray(size, value) {
-			var arr = [];
-			for ( var i = 0; i < size; i ++ ) {
-				// 0 ~ 98  0~99   -99~98
-				arr.push( Math.floor((value - 1)*Math.random()) - Math.floor(value*Math.random()));
+			return arr;
+		}
+		// 构建堆
+		function heapInsert(arr, index) {
+			while( arr[index - 1 >> 1] < arr[index] ) {
+				var temp = arr[index - 1 >> 1];
+					arr[index - 1 >> 1] = arr[index];
+					arr[index] = temp;
+					index = index - 1 >> 1;
+			}
+			var heapSize = arr.length - 1;
+			var temp = arr[0];
+			arr[0] = arr[heapSize];
+			arr[heapSize] = temp;
+			while( heapSize > 0 ) {
+				arr = heapify(arr, 0, heapSize);
+				var wrap = arr[0];
+				arr[0] = arr[--heapSize]
+				arr[heapSize] = wrap;
+			}
+			return arr;
+		}
+		// 往下沉
+		function heapify(arr, index, heapSize) {
+			var left = index * 2 + 1;
+			while( left < heapSize ) {
+				var largest = left + 1 < heapSize && arr[left + 1] > arr[left] ? left + 1 : left;
+				if ( largest == index ) {
+					break;
+				}
+				var temp = arr[largest];
+				arr[largest] = arr[index];
+				arr[index] = temp;
+
+				index = largest;
+				left = index * 2 + 1;
 			}
 			return arr;
 		}
 
-		function copyArr(arr) {
-			var copyArr = [];
-			for ( var i = 0; i < arr.length; i ++ ) {
-				copyArr[i] = arr[i];
-			}
-			return copyArr;
-		}
 
-		function isEqual(arr1, arr2) {
-			if ( arr1.length != arr2.length ) {
-				return false;
-			}
-			if ( arr1 == null && arr2 != null ) {
-				return false;
-			}
-			if ( arr1 != null && arr2 == null ) {
-				return false;
-			}
-
-			for ( var i = 0; i < arr1.length; i ++ ) {
-				if ( arr1[i] != arr2[i] ) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		function rightMethod(arr) {
-			return arr.sort(function(a, b) {
-				return a - b;
-			});
-		}
-
+		// O(n^2) O(1) 稳定
 		function bubbleSort(arr) {
-			if ( arr == null || arr.length < 2 ) {
-				return;
-			}
-			for ( var end = arr.length - 1; end >= 0; end -- ) {
+			for (var end = arr.length - 1; end >= 0; end -- ) {
 				for ( var i = 0; i < end; i ++ ) {
 					if ( arr[i] > arr[i + 1] ) {
 						var temp = arr[i];
@@ -75,13 +69,101 @@
 						arr[i + 1] = temp;
 					}
 				}
+			} 
+			return arr;
+		}
+
+		// O(n^2) O(1) 不稳定
+		function selectSort(arr) {
+			for ( var i = 0; i < arr.length; i ++ ) {
+				var minIndex = i;
+				for ( var j = i + 1; j < arr.length; j ++ ) {
+					minIndex = arr[j] < arr[minIndex] ? j : minIndex;
+				}
+				var temp = arr[minIndex];
+				arr[minIndex] = arr[i];
+				arr[i] = temp;
 			}
 			return arr;
 		}
+
+		// O(n^2) 最优：O(n) O(1) 稳定
+		function insertSort(arr) {
+			for ( var i = 1; i < arr.length; i ++ ) {
+				for ( var j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j -- ) {
+					var temp = arr[j];
+					arr[j] = arr[j + 1];
+					arr[j + 1] = temp;
+				}
+			}
+			return arr;
+		}
+
+		// O(nlogn) O(1)/O(n)
+		function mergeSort(arr) {
+			if ( arr === null ) {
+				return;
+			}
+			if ( arr.length == 1 ) {
+				return arr;
+			}
+			var mid = arr.length >> 1;
+			var leftArr = arr.slice(0, mid);
+			var rightArr = arr.slice(mid);
+			return merge(mergeSort(leftArr), mergeSort(rightArr));
+		}
+
+		function merge(leftArr, rightArr) {
+			var result = [];
+			var i = 0;
+			var p1 = 0;
+			var p2 = 0;
+			while ( p1 < leftArr.length && p2 < rightArr.length ) {
+				result[i++] = leftArr[p1] > rightArr[p2] ? rightArr[p2++] : leftArr[p1++];
+			}
+			while ( p1 < leftArr.length ) {
+				result[i ++] = leftArr[p1++];
+			}
+			while( p2 < rightArr.length ) {
+				result[i ++] = rightArr[p2++];
+			}
+			return result;
+		}
+
+		// O(n*logn)  O(n*logn)
+		function quickSort(arr) {
+			if ( arr == null ) {
+
+			}
+			if ( arr.length <= 0 ) {
+				return arr;
+			}
+			var point = parseInt(Math.random()*arr.length);
+			var num = arr.splice(point, 1);
+			var left = [];
+			var right = [];
+			for ( var i = 0; i < arr.length; i ++ ) {
+				if ( arr[i] <= num ) {
+					left.push(arr[i]);
+				} else {
+					right.push(arr[i]);
+				}
+			}
+			return quickSort(left).concat(num, quickSort(right));
+		}
+
 		
 	</script>
 </head>
 <body>
+
+
+
+
+
+
+
+
 
 </body>
 </html>

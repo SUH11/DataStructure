@@ -41,7 +41,7 @@ function heapInsert(arr, index) {
 	return arr;
 }
 
-// 堆中，往下沉
+// 堆中，往下沉  注意：1.最大的放到末尾   2.比较左右孩子，选择大的来进行交换，交换完成后，index值也交换
 function heapify(arr, index, heapSize) {
 	var left = index * 2 + 1;
 	while( left < heapSize ) {

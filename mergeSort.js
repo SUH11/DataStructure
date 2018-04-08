@@ -30,8 +30,8 @@ function merge(leftArr, rightArr) {
 	var helpArr = [];
 	var i = 0;
 	var p1 = 0;
-	var p2 = 0;
-
+	var p2 = 0;	
+	// 定义两个指针
 	while(p1 < leftArr.length && p2 < rightArr.length) {
 		helpArr[i++] = leftArr[p1] > rightArr[p2] ? rightArr[p2++] : leftArr[p1++];
 	}
