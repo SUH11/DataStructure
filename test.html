@@ -4,232 +4,43 @@
 	<title></title>
 	<meta charset="utf-8">
 	<script type="text/javascript">
-		var bag = 10;
-		var w = [2, 3, 1, 5, 2];
-		var v = [1, 2, 2, 3, 1];
+		var arr = [6, 7, 1, 4, 8, 2, 5];
 
-		function getValue(w, v, bag) {
-			
-		}
+		console.log( search(arr, 38) );
 
-
-
-
-
-
-		// var arr = [1, 6, 4, 3, 5];
-		// console.log( 'bubbleSort', bubbleSort(arr) );
-		// console.log( 'selectSort', selectSort(arr) );
-		// console.log( 'insertSort', insertSort(arr) );
-		// console.log( 'mergeSort', mergeSort(arr) );
-		// console.log( 'quickSort', quickSort(arr) );
-		// console.log( 'heapSort', heapSort(arr) );
-
-		// 
-		function heapSort(arr) {
-			for ( var i = 0; i < arr.length; i ++ ) {
-				arr = heapInsert(arr, i);
-			}
-
-			return arr;
-		}
-		// 构建堆
-		function heapInsert(arr, index) {
-			while( arr[index - 1 >> 1] < arr[index] ) {
-				var temp = arr[index - 1 >> 1];
-					arr[index - 1 >> 1] = arr[index];
-					arr[index] = temp;
-					index = index - 1 >> 1;
-			}
-			var heapSize = arr.length - 1;
-			var temp = arr[0];
-			arr[0] = arr[heapSize];
-			arr[heapSize] = temp;
-			while( heapSize > 0 ) {
-				arr = heapify(arr, 0, heapSize);
-				var wrap = arr[0];
-				arr[0] = arr[--heapSize]
-				arr[heapSize] = wrap;
-			}
-			return arr;
-		}
-		// 往下沉
-		function heapify(arr, index, heapSize) {
-			var left = index * 2 + 1;
-			while( left < heapSize ) {
-				var largest = left + 1 < heapSize && arr[left + 1] > arr[left] ? left + 1 : left;
-				if ( largest == index ) {
-					break;
-				}
-				var temp = arr[largest];
-				arr[largest] = arr[index];
-				arr[index] = temp;
-
-				index = largest;
-				left = index * 2 + 1;
-			}
-			return arr;
-		}
-
-
-		// O(n^2) O(1) 稳定
-		function bubbleSort(arr) {
-			for (var end = arr.length - 1; end >= 0; end -- ) {
-				for ( var i = 0; i < end; i ++ ) {
-					if ( arr[i] > arr[i + 1] ) {
-						var temp = arr[i];
-						arr[i] = arr[i + 1];
-						arr[i + 1] = temp;
-					}
-				}
-			} 
-			return arr;
-		}
-
-		// O(n^2) O(1) 不稳定
-		function selectSort(arr) {
-			for ( var i = 0; i < arr.length; i ++ ) {
-				var minIndex = i;
-				for ( var j = i + 1; j < arr.length; j ++ ) {
-					minIndex = arr[j] < arr[minIndex] ? j : minIndex;
-				}
-				var temp = arr[minIndex];
-				arr[minIndex] = arr[i];
-				arr[i] = temp;
-			}
-			return arr;
-		}
-
-		// O(n^2) 最优：O(n) O(1) 稳定
-		function insertSort(arr) {
-			for ( var i = 1; i < arr.length; i ++ ) {
-				for ( var j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j -- ) {
-					var temp = arr[j];
-					arr[j] = arr[j + 1];
-					arr[j + 1] = temp;
-				}
-			}
-			return arr;
-		}
-
-		// O(nlogn) O(1)/O(n)
-		function mergeSort(arr) {
-			if ( arr === null ) {
+		function search(arr, target) {	
+			if ( arr == null ) {
 				return;
 			}
 			if ( arr.length == 1 ) {
-				return arr;
+				return arr[0] == target;
 			}
-			var mid = arr.length >> 1;
-			var leftArr = arr.slice(0, mid);
-			var rightArr = arr.slice(mid);
-			return merge(mergeSort(leftArr), mergeSort(rightArr));
-		}
-
-		function merge(leftArr, rightArr) {
-			var result = [];
-			var i = 0;
-			var p1 = 0;
-			var p2 = 0;
-			while ( p1 < leftArr.length && p2 < rightArr.length ) {
-				result[i++] = leftArr[p1] > rightArr[p2] ? rightArr[p2++] : leftArr[p1++];
-			}
-			while ( p1 < leftArr.length ) {
-				result[i ++] = leftArr[p1++];
-			}
-			while( p2 < rightArr.length ) {
-				result[i ++] = rightArr[p2++];
-			}
-			return result;
-		}
-
-		// O(n*logn)  O(n*logn)
-		function quickSort(arr) {
-			if ( arr == null ) {
-
-			}
-			if ( arr.length <= 0 ) {
-				return arr;
-			}
-			var point = parseInt(Math.random()*arr.length);
-			var num = arr.splice(point, 1);
+			// [0, 6]
+			var pointIndex = Math.floor( Math.random()*arr.length );
+			var point = arr.splice(pointIndex, 1)[0];
 			var left = [];
 			var right = [];
-			for ( var i = 0; i < arr.length; i ++ ) {
-				if ( arr[i] <= num ) {
-					left.push(arr[i]);
-				} else {
-					right.push(arr[i]);
-				}
-			}
-			return quickSort(left).concat(num, quickSort(right));
-		}
 
-
-		/*
-			发布订阅
-			伪代码
-				Event = {
-					name1: [fn1, fn2……],
-					name2: [fn1, fn2……],
-					name3: [fn1, fn2……],
-					……
-				}
-		*/
-		var Event = (function() {
-			var list = {};
-			var listen;
-			var trigger;
-			var remove;
-
-			listen = function(key, fn) {
-				if ( !list[key] ) {
-					list[key] = [];
-				}
-				list[key].push(fn);
-			};
-
-			trigger = function() {
-				var key = Array.prototype.shift.call(arguments);
-				msg = list[key];
-				if ( !msg || msg.length == 0 ) {
-					return false;
-				}
-				for ( var i = 0; i < msg.length; i ++ ) {
-					msg[i].apply(this, arguments);
-				}
-			};
-
-			remove = function(key, fn) {
-				var msg = list[key];
-				if ( !msg ) {
-					return false;
-				}
-				if ( !fn ) {
-					delete list[key];
-				} else {
-					for ( var i = 0; i < msg.length; i ++ ) {
-						if ( fn === msg[i] ) {
-							msg.splice(i, 1);
-						}
+			if ( point == target ) {
+				return true;
+			} else {
+				for ( var i = 0; i < arr.length; i ++ ) {
+					if ( arr[i] <= point ) {
+						left.push(arr[i]);
+					} else {
+						right.push(arr[i]);
 					}
 				}
-			};
-			return {
-				listen,
-				trigger,
-				remove
+				if ( target < point && left.length) {
+					return search(left, target);
+				} else if ( target > point && right.length) {
+					return search(right, target);
+				} else {
+					return false;
+				}
+
 			}
-
-		})();
-
-		var fn = function(data) {
-			console.log(data + '推送');
 		}
-		Event.listen('谁谁', fn);
-		Event.trigger('谁谁', '1111');
-		// Event.remove('谁谁', fn);
-		
 	</script>
 </head>
 <body>
