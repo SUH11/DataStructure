@@ -2,6 +2,13 @@
 	堆排序
 		时间复杂度：O(nlogn)
 		空间复杂度：O(logn)
+		
+	parentIndex:   (index - 1) >> 1;
+	
+	leftChildIndex: index * 2 + 1
+	
+	rightChildIndex: index * 2 + 2
+
 */
 
 var arr = [1, 6, 9, 4, 3, 2];
